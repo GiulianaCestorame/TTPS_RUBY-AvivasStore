@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+  
+  <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
+
+
+ 
+</head>
+
+<body>
+
+  <!-- Mensajes Flash -->
+  <% if flash[:notice] %>
+    <div class="alert alert-success">
+      <%= flash[:notice] %>
+    </div>
+  <% end %>
+  
+  <!-- Barra de navegación con Bootstrap -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Mi Tienda</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <% if user_signed_in? %>
+            <li class="nav-item">
+              <%= link_to "Perfil", edit_user_registration_path, class: "nav-link active", aria_current: "page" %>
+            </li>
+            <li class="nav-item">
+             <%= button_to "Cerrar sesión", destroy_user_session_path, method: :delete, data: { confirm: '¿Estás seguro que deseas cerrar sesión?' }, class: "btn btn-link" %>
+
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "Iniciar sesión", new_user_session_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Registrarse", new_user_registration_path, class: "nav-link" %>
+            </li>
+          <% end %>
+          <li class="nav-item">
+            <%= link_to "Usuarios", users_path, class: "nav-link" %>
+          </li>
+
+          <!-- Enlace deshabilitado -->
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" aria-disabled="true">Disabled</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main class="container mt-4">
+    <%= yield %>
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="bg-light text-center py-4">
+    <p>&copy; <%= Time.now.year %> Mi Aplicación Rails. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Incluir Bootstrap JS desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-7kNXWnn/fNHBoww2iDeaGITlQg6NlwGoXuI6OW/JQ1TEP6kZRIfkW5tiAfbOFrgQ" crossorigin="anonymous"></script>
+
+</body>
+</html>

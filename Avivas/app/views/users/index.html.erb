@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Index usuarios</title>
+  <%= csrf_meta_tags %>
+
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
+</head>
+
+<% if flash[:notice] %>
+  <div class="alert alert-success">
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+<% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
+
+
+<table>
+    <thead>
+      <tr>
+        <th>Nombre de usuario</th>
+        <th>Correo electrónico</th>
+        <th>Rol</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.username %></td>
+          <td><%= user.email %></td>
+          <td><%= user.role_int %></td>
+          <td>
+            <%= link_to 'Editar', edit_user_path(user) %>
+            <%= link_to 'Desactivar', desactivar_user_path(user), method: :delete, data: { confirm: '¿Estás seguro de que quieres desactivar este usuario?' } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</html>
