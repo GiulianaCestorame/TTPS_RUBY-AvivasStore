@@ -2,7 +2,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
    before_action :configure_account_update_params, only: [:update]
    before_action :authenticate_user!
-   before_action :authorize_admin_or_manager, only: [:new, :create]  # Esto asegurará que solo los administradores puedan crear usuarios
+   before_action :authorize_admin_or_manager, only: [:new, :create]
    skip_before_action :require_no_authentication, only: [:new, :create]
 
 
@@ -49,19 +49,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end 
   end
 
-
-  def edit_administracion
-    @user = User.find(params[:id])
-  end
-
-  def update_administracion
-    @user = User.find(params[:id])
-    if @user.update(user_params)
-      redirect_to users_path, notice: 'Usuario actualizado con éxito.'
-    else
-      render :edit
-    end
-  end
 
   private
 

@@ -3,9 +3,15 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',registrations: 'users/registrations'
   }
 
-  resources :users, only: [:index]
-  delete '/users/:id/desactivar', to: 'users#desactivar', as: :desactivar_user
-
+  resources :users, only: [:index] do
+    member do
+      get :edit_administracion     
+      patch :update_administracion 
+      delete :desactivar, to: 'users#desactivar'  # Esto es la forma correcta de definir la ruta
+    end
+  end
+ # delete '/users/:id/desactivar', to: 'users#desactivar', as: :desactivar_user
+  
 
   get "home/index"
 

@@ -1,0 +1,120 @@
+<html>
+<style>
+form {
+  background: #f7f7f7;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  font-size: 24px;
+}
+
+.field {
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 14px;
+  color: #555;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
+
+.input-field:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #45a049;
+}
+
+em {
+  font-size: 12px;
+  color: #888;
+}
+
+</style>
+
+<h2>Editar información personal </h2>
+
+<% if flash[:notice] %>
+  <div class="alert alert-success">
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+
+
+<%= form_for(@user, url: update_administracion_user_path(@user)) do |f| %>
+
+    <% if @user.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :username %><br />
+    <%= f.text_field :username, value: @user.username, autofocus: true, autocomplete: "username" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, value: @user.email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+
+  <div class="field">
+    <%= f.label :phone %><br />
+    <%= f.text_field :phone, value: @user.phone, autofocus: true, autocomplete: "phone" %>
+  </div>
+
+  <div class="field">
+  <%= f.label :role_int, "Role" %><br />
+  <% roles = current_user.manager? ? User.role_ints.keys.select { |role| %w(manager employee).include?(role) } : User.role_ints.keys %>
+  <%= f.select :role_int, roles.map { |role| [role.titleize, role] }, { selected: @user.role_int }, class: "input-field" %>
+</div>
+
+
+  
+  <div class="actions">
+    <%= f.submit "Update" , class: "btn-submit" %>
+  </div>
+
+
+<% end %>
+
+<%= link_to "Back", :back %>
+</html>

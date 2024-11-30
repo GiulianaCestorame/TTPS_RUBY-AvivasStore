@@ -16,6 +16,27 @@ class UsersController < ApplicationController
     redirect_to users_path, notice: 'Usuario desactivado.'
   end
 
+  def edit_administracion
+    @user = User.find(params[:id])
+  end
+
+  def update_administracion
+    @user = User.find(params[:id])
+  
+    # Evitar que los administradores/gerentes cambien el rol de un usuario a admin
+    if current_user.manager? && user_params[:role_int] == 'admin'
+      flash.now[:alert] = 'No puedes asignar el rol de administrador a este usuario.'
+      render :edit_administracion and return
+    end
+  
+    if @user.update(user_params)
+      redirect_to users_path, notice: 'Usuario actualizado con éxito.'
+    else
+      render :edit_administracion
+    end
+  end
+  
+
   private
 
   def authorize_admin
@@ -28,6 +49,10 @@ class UsersController < ApplicationController
     unless current_user.admin? || current_user.manager?
       redirect_to root_path, alert: 'No tienes permisos para realizar esta acción.'
     end
+  end
+
+  def user_params
+    params.require(:user).permit(:username, :email, :phone, :password, :role_int)
   end
 
 

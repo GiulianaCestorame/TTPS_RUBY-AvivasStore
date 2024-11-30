@@ -4,7 +4,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Index usuarios</title>
+  <title>Usuarios</title>
   <%= csrf_meta_tags %>
 
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
@@ -46,7 +46,7 @@
           <td><%= user.role_int %></td>
           <td>
             <% if not user.admin? %>
-            <%= link_to 'Editar', edit_user_registration_path(user) %>
+            <%= link_to 'Editar', edit_administracion_user_path(user) %>
             <% if user.active%>
             <% if current_user.admin? %>
             <%= button_to "Desactivar", desactivar_user_path(user), method: :delete, data: { confirm: '¿Estás seguro que quieres desactivar este usuario?' }, class: "btn btn-link" %>
