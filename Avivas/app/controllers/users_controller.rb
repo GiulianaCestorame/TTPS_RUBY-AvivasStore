@@ -18,6 +18,7 @@ class UsersController < ApplicationController
 
   def edit_administracion
     @user = User.find(params[:id])
+    @current_user=current_user
   end
 
   def update_administracion
@@ -52,7 +53,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:username, :email, :phone, :password, :role_int)
+    params.require(:user).permit(:username, :email, :phone, :password, :role_int, :active)
   end
 
 

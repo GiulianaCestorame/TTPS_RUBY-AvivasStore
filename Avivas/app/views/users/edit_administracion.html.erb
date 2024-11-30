@@ -107,6 +107,13 @@ em {
   <%= f.select :role_int, roles.map { |role| [role.titleize, role] }, { selected: @user.role_int }, class: "input-field" %>
 </div>
 
+  <% if not @user.active? and @current_user.admin? %>
+  <div class="field">
+    <%= f.label :active, "Activo" %><br />
+    <%= f.check_box :active, {}, "1", "0" %>
+  </div>
+<% end %>
+
 
   
   <div class="actions">
