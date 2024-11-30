@@ -1,14 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
-    registrations: 'users/registrations' , 
-    sessions: 'users/sessions'
+    sessions: 'users/sessions',registrations: 'users/registrations'
   }
 
-  resources :users do
-    member do
-      get :desactivar  
-    end
-  end
+  resources :users, only: [:index]
+  delete '/users/:id/desactivar', to: 'users#desactivar', as: :desactivar_user
+
+
   get "home/index"
 
   get "up" => "rails/health#show", as: :rails_health_check

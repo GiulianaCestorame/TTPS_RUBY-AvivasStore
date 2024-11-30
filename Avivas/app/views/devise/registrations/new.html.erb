@@ -66,7 +66,7 @@ em {
 
 </head>
 
-<h2>Registro</h2>
+<h2>Crear nuevo usuario</h2>
 
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
@@ -88,9 +88,11 @@ em {
   </div>
 
   <div class="field">
-    <%= f.label :role_int, "Role" %><br />
-    <%= f.select :role_int, User.role_ints.keys.map { |role| [role.titleize, role] }, {}, class: "input-field" %>
-  </div>
+  <%= f.label :role_int, "Role" %><br />
+  <% roles = current_user.manager? ? User.role_ints.keys.select { |role| %w(manager employee).include?(role) } : User.role_ints.keys %>
+  <%= f.select :role_int, roles.map { |role| [role.titleize, role] }, {}, class: "input-field" %>
+</div>
+
 
   <div class="field">
     <%= f.label :password %>

@@ -26,6 +26,10 @@
 
 
 <table>
+  <li class="nav-item">
+    <%= link_to "Nuevo usuario",  new_user_registration_path, class: 'btn btn-primary' %>
+  </li>
+  <% if @users.present? %>
     <thead>
       <tr>
         <th>Nombre de usuario</th>
@@ -41,12 +45,23 @@
           <td><%= user.email %></td>
           <td><%= user.role_int %></td>
           <td>
-            <%= link_to 'Editar', edit_user_path(user) %>
-            <%= link_to 'Desactivar', desactivar_user_path(user), method: :delete, data: { confirm: '¿Estás seguro de que quieres desactivar este usuario?' } %>
+            <% if not user.admin? %>
+            <%= link_to 'Editar', edit_user_registration_path(user) %>
+            <% if user.active%>
+            <% if current_user.admin? %>
+            <%= button_to "Desactivar", desactivar_user_path(user), method: :delete, data: { confirm: '¿Estás seguro que quieres desactivar este usuario?' }, class: "btn btn-link" %>
+            <% end %>
+            <% else %>
+            <p>Usuario inactivo</p>
+            <% end %>
+            <% end %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+  <% else %>
+  <p>No hay usuarios disponibles</p>
+  <% end %>
 
 </html>

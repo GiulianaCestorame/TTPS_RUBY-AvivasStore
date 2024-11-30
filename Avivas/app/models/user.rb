@@ -1,7 +1,6 @@
 class User < ApplicationRecord
   enum :role_int , admin: 0, manager: 1, employee: 2 
   before_create :set_joined_at
-  before_update :restrict_role_change
   before_update :check_if_active_changed
 
   # Include default devise modules. Others available are:
@@ -14,6 +13,7 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/, message: "Formato de email incorrecto." }
   validates :phone, presence: true, format: { with: /\A\d{6,10}\z/, message: "El telefono debe tener entre 6 y 10 numeros" }
   validates :role_int, inclusion: { in: role_ints.keys.map { |role| role.to_s }, message: "%{value} Role invalido." }
+  validate :cannot_assign_admin_role, on: :create 
 
 
 
@@ -35,12 +35,12 @@ class User < ApplicationRecord
     end
   end
 
-  def restrict_role_change
-    if role_int_changed?
-      errors.add(:role_int, "cannot be changed.")
-      throw :abort
+  def cannot_assign_admin_role
+    if role_int == "admin" && !current_user.admin?
+      errors.add(:role_int, "No tienes permiso para asignar el rol de admin. Se asignara el rol de empleado")
     end
   end
+
 
 
 end
