@@ -12,7 +12,33 @@
   
   <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
 
+<style>
+.productos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
 
+.producto {
+  border: 1px solid #ddd;
+  padding: 10px;
+  width: 30%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.producto img {
+  width: 100%;
+  height: auto;
+}
+
+.producto h3 {
+  font-size: 1.5rem;
+}
+
+.producto p {
+  margin: 0.5rem 0;
+}
+</style>
  
 </head>
 
@@ -61,6 +87,44 @@
   <main class="container mt-4">
     <%= yield %>
 
+     <!-- Buscador -->
+  <form method="get" action="<%= root_path %>">
+    <input type="text" name="q" placeholder="Buscar productos..." value="<%= params[:q] %>">
+    <button type="submit">Buscar</button>
+  </form>
+
+  <!-- Categorías -->
+  <div>
+    <h2>Categorías</h2>
+    <ul>
+      <li><%= link_to 'Todas', root_path %></li>
+      <% @categorias.each do |categoria| %>
+        <li><%= link_to categoria.nombre, categoria_path(categoria) %></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <!-- Lista de productos -->
+  <% if @productos.present? %>
+    <div class="productos">
+      <% @productos.each do |producto| %>
+        <div class="producto">
+          <% if producto.imagen? %>
+            <%= image_tag producto.imagen.url %>
+          <% end %>
+          <h3><%= producto.nombre %></h3>
+          <p><%= producto.descripcion %></p>
+          <p><strong>Precio:</strong> $<%= producto.precio %></p>
+          <p><strong>Stock disponible:</strong> <%= producto.stock %></p>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p>No hay productos disponibles</p>
+  <% end %>
+  
+  
+  
 
 
 
@@ -74,6 +138,7 @@
 
   <!-- Incluir Bootstrap JS desde CDN -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-7kNXWnn/fNHBoww2iDeaGITlQg6NlwGoXuI6OW/JQ1TEP6kZRIfkW5tiAfbOFrgQ" crossorigin="anonymous"></script>
+  <%= javascript_include_tag 'application' %>
 
 </body>
 </html>

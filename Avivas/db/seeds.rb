@@ -8,26 +8,159 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-User.create!(
-  email: 'gerente@gerente.com',
-  password: '123456',
-  role_int: :manager,
-  username: "manager",
-  phone: "123456"
-)
 
-User.create!(
-  email: 'empleado@empleado.com',
-  password: '123456',
-  role_int: :employee,
-  username: "empleado",
-  phone: "123456"
-)
-User.create!(
-  email: 'admin@admin.com',
-  password: '123456',
-  role_int: :admin,
-  username: "admin",
-  phone: "123456"
-)
+User.find_or_create_by!(email: 'gerente@gerente.com') do |user|
+  email = 'gerente@gerente.com'
+  password = '123456'
+  role_int = :manager
+  username = "manager"
+  phone = "123456"
+end
+
+
+User.find_or_create_by!(email: 'empleado@empleado.com') do |user|
+  email = 'empleado@empleado.com'
+  password = '123456'
+  role_int = :employee
+  username = "empleado"
+  phone = "123456"
+end
+
+
+User.find_or_create_by!(email: 'admin@admin.com') do |user|
+  email = 'admin@admin.com'
+  password = '123456'
+  role_int = :admin
+  username = "admin"
+  phone = "123456"
+end
+# Crear categorías
+camisas = Categoria.find_or_create_by(nombre: 'Camisas')
+pantalones = Categoria.find_or_create_by(nombre: 'Pantalones')
+zapatos = Categoria.find_or_create_by(nombre: 'Zapatos')
+accesorios = Categoria.find_or_create_by(nombre: 'Accesorios')
+
+puts 'Categorías creadas exitosamente.'
+
+# Crear productos
+Producto.find_or_create_by(
+  nombre: 'Camisa Azul',
+  descripcion: 'Una camisa azul elegante para cualquier ocasión.',
+  precio: 49.99,
+  stock: 10,
+  categoria: camisas
+  ) do |prod|
+    # Cargar la imagen usando CarrierWave
+    prod.imagen = File.open(Rails.root.join('public', 'uploads', 'camisaazul.jpg'))
+    prod.save
+  end
+
+
+Producto.find_or_create_by(
+  nombre: 'Zapatos Deportivos',
+  descripcion: 'Zapatos deportivos ligeros y resistentes.',
+  precio: 89.99,
+  stock: 8,
+  categoria: zapatos
+  ) do |prod|
+    # Cargar la imagen usando CarrierWave
+    prod.imagen = File.open(Rails.root.join('public', 'uploads', 'zapas.jpg'))
+    prod.save
+  end
+
+Producto.find_or_create_by(
+  nombre: 'Reloj de Pulsera',
+  descripcion: 'Reloj de pulsera clásico con diseño minimalista.',
+  precio: 199.99,
+  stock: 5,
+  categoria: accesorios
+  ) do |prod|
+    # Cargar la imagen usando CarrierWave
+    prod.imagen = File.open(Rails.root.join('public', 'uploads', 'reloj.jpg'))
+    prod.save
+  end
+
+
+Producto.find_or_create_by(
+  nombre: 'Cinturón de Cuero',
+  descripcion: 'Cinturón de cuero genuino con hebilla metálica.',
+  precio: 39.99,
+  stock: 20,
+  categoria: accesorios
+  ) do |prod|
+    # Cargar la imagen usando CarrierWave
+    prod.imagen = File.open(Rails.root.join('public', 'uploads', 'cinturon.jpg'))
+    prod.save
+  end
+
+Producto.find_or_create_by(
+  nombre: 'Zapatos Formales',
+  descripcion: 'Zapatos formales de cuero para ocasiones especiales.',
+  precio: 120.00,
+  stock: 7,
+  categoria: zapatos
+  ) do |prod|
+    # Cargar la imagen usando CarrierWave
+    prod.imagen = File.open(Rails.root.join('public', 'uploads', 'zapatos.jpg'))
+    prod.save
+  end
+
+Producto.find_or_create_by(
+  nombre: 'Camisa Blanca',
+  descripcion: 'Camisa blanca clásica de manga larga.',
+  precio: 45.00,
+  stock: 12,
+  categoria: camisas
+  ) do |prod|
+    # Cargar la imagen usando CarrierWave
+    prod.imagen = File.open(Rails.root.join('public', 'uploads', 'camisa.jpg'))
+    prod.save
+  end
+
+
+
+Producto.find_or_create_by(
+  nombre: 'Pantalones Vaqueros',
+  descripcion: 'Pantalones vaqueros de mezclilla azul de corte clásico.',
+  precio: 65.00,
+  stock: 18,
+  categoria: pantalones
+  ) do |prod|
+    # Cargar la imagen usando CarrierWave
+    prod.imagen = File.open(Rails.root.join('public', 'uploads', 'OIP.jpg'))
+    prod.save
+  end
+
+# Crear producto con imagen
+Producto.find_or_create_by(
+  nombre: 'Pantalones Negros',
+  descripcion: 'Pantalones negros con carrie wave .',
+  precio: 59.99,
+  stock: 90,
+  categoria: pantalones
+) do |prod|
+  # Cargar la imagen usando CarrierWave
+  prod.imagen = File.open(Rails.root.join('public', 'uploads', 'pexels-429124762-26256163.jpg'))
+  prod.save
+end
+
+Producto.find_or_create_by(
+  nombre: 'Zapatos mujer',
+  descripcion: 'Zapatos stilletos rojos .',
+  precio: 99.99,
+  stock: 10,
+  categoria: zapatos
+) do |prod|
+  # Cargar la imagen usando CarrierWave
+  prod.imagen = File.open(Rails.root.join('public', 'uploads', 'zapatosmujer.jpg'))
+  prod.save
+end
+
+
+puts 'Productos creados exitosamente.'
+
+
+
+
+
 

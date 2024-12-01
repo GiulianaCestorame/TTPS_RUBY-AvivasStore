@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   root 'home#index'  # Esto establece el controlador y acción para la página de inicio
+  get 'categorias/:id', to: 'home#index', as: 'categoria'
+
   get '/favicon.ico', to: redirect('/assets/favicon.ico', status: 200)
 
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_29_114108) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_30_232331) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -23,6 +23,24 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_29_114108) do
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
+  end
+
+  create_table "categoria", force: :cascade do |t|
+    t.string "nombre"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "productos", force: :cascade do |t|
+    t.string "nombre"
+    t.text "descripcion"
+    t.decimal "precio"
+    t.integer "stock"
+    t.string "imagen"
+    t.integer "categoria_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["categoria_id"], name: "index_productos_on_categoria_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -42,4 +60,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_29_114108) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
+
+  add_foreign_key "productos", "categoria", column: "categoria_id"
 end

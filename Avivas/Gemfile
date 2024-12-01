@@ -41,6 +41,9 @@ gem "devise"
 
 gem "webpacker"
 
+gem "carrierwave"
+
+
 
 
 
