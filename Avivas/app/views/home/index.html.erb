@@ -93,17 +93,12 @@
     <button type="submit">Buscar</button>
   </form>
 
-  <!-- Categorías -->
-  <div>
-    <h2>Categorías</h2>
-    <ul>
-      <li><%= link_to 'Todas', root_path %></li>
-      <% @categorias.each do |categoria| %>
-        <li><%= link_to categoria.nombre, categoria_path(categoria) %></li>
-      <% end %>
-    </ul>
-  </div>
+ 
 
+
+<%= form_with url: home_por_categoria_path, method: :get, local: true do %> <%= select_tag :categoria, options_from_collection_for_select(@categorias, 'id', 'nombre'), include_blank: 'Selecciona una categoría' %> <%= submit_tag 'Filtrar' %> <% end %>
+
+  
   <!-- Lista de productos -->
   <% if @productos.present? %>
     <div class="productos">
