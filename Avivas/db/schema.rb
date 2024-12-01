@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_30_232331) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_01_222004) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -31,6 +31,12 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_30_232331) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "colors", force: :cascade do |t|
+    t.string "nombre"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "productos", force: :cascade do |t|
     t.string "nombre"
     t.text "descripcion"
@@ -40,6 +46,12 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_30_232331) do
     t.integer "categoria_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "talle"
+    t.string "color_id"
+    t.datetime "fecha_ingreso"
+    t.datetime "fecha_modificacion"
+    t.datetime "fecha_baja"
+    t.json "imagenes"
     t.index ["categoria_id"], name: "index_productos_on_categoria_id"
   end
 

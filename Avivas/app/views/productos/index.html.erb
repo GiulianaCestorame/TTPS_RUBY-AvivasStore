@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administración de Productos</title>
+  
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
+
+  <style>
+    .navbar-brand { font-size: 1.8rem; font-weight: bold; }
+    .nav-link { font-size: 1.2rem; margin-right: 10px; }
+    .btn-link { font-size: 1.2rem; margin-right: 10px; color: #ff0000; }
+    .container-fluid { background-color: #f8f9fa; }
+    
+    form { margin: 20px 0; }
+    input[type="text"] { padding: 10px; width: 70%; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px; }
+    button { padding: 10px 20px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+    select { padding: 10px; width: 70%; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px; }
+    
+    .productos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .producto {
+      border: 1px solid #ddd;
+      padding: 10px;
+      width: 30%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .producto img {
+      width: 100%;
+      height: auto;
+    }
+
+    .producto h3 {
+      font-size: 1.5rem;
+    }
+
+    .producto p {
+      margin: 0.5rem 0;
+    }
+
+    .acciones {
+      margin-top: 10px;
+    }
+
+    .acciones a {
+      margin-right: 10px;
+      font-size: 0.9rem;
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    .acciones a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <!-- Mensajes Flash -->
+  <% if flash[:notice] %>
+    <div class="alert alert-success">
+      <%= flash[:notice] %>
+    </div>
+  <% end %>
+
+<h2>Administración de productos</h2>
+
+<!-- Lista de productos -->
+<div class="productos">
+  <% if @productos.present? %>
+    <% @productos.each do |producto| %>
+      <div class="producto">
+        <!-- Mostrar todas las imágenes asociadas al producto -->
+        <% if producto.imagenes.present? %>
+          <div class="imagenes">
+            <% producto.imagenes.each do |imagen| %>
+              <%= image_tag imagen.url, alt: producto.nombre %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <h3><%= producto.nombre %></h3>
+        <p><%= producto.descripcion %></p>
+        <p><strong>Precio:</strong> $<%= producto.precio %></p>
+        <p><strong>Stock disponible:</strong> <%= producto.stock %></p>
+
+        <!-- Acciones para modificar, eliminar o cambiar stock -->
+        <div class="acciones">
+          <%= link_to 'Editar', edit_producto_path(producto), class: 'btn btn-warning' %>
+          <%= link_to 'Modificar stock', edit_producto_path(producto), class: 'btn btn-primary' %>
+          <%= link_to 'Eliminar', producto_path(producto), method: :delete, data: { confirm: '¿Estás seguro de que quieres eliminar este producto?' }, class: 'btn btn-danger' %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No hay productos disponibles</p>
+  <% end %>
+</div>
+
+
+
+</body>
+</html>
