@@ -1,0 +1,111 @@
+<html>
+<head>
+<style>
+form {
+  background: #f7f7f7;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  font-size: 24px;
+}
+
+.field {
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 14px;
+  color: #555;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
+
+.input-field:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #45a049;
+}
+
+em {
+  font-size: 12px;
+  color: #888;
+}
+
+</style>
+
+</head>
+<%= link_to "Back", :back %>
+
+<h2>Crear nuevo producto</h2>
+
+
+<!-- Mostrar mensajes de error -->
+ <% if flash[:alert].present? %> 
+ <div class="alert">
+  <%= flash[:alert] %> 
+  </div> 
+  <% end %>
+
+  
+<%= form_with(model: Producto, local: true, html: { multipart: true }) do |form| %>
+    <%= form.label :nombre %>
+    <%= form.text_field :nombre %>
+  
+    <%= form.label :descripcion %>
+    <%= form.text_area :descripcion %>
+  
+    <%= form.label :precio %>
+    <%= form.number_field :precio, step: 0.01 %>
+  
+    <%= form.label :stock %>
+    <%= form.number_field :stock %>
+  
+    <%= form.label :categoria %>
+    <%= form.collection_select :categoria_id, Categoria.all, :id, :nombre %>
+  
+    <%= form.label :imagenes, "Imágenes" %>
+    <%= form.file_field :imagenes, multiple: true %>
+  
+    <%= form.label :talle %>
+    <%= form.text_field :talle %>
+  
+    <%= form.label :color %>
+    <%= form.collection_select :color_id, Color.all, :id, :nombre %>
+  
+ <%= form.submit 'Crear Producto', class: 'btn-submit' %>
+
+  <% end %>
+
+  
+</html>
