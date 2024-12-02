@@ -30,7 +30,6 @@ class ProductosController < ApplicationController
         @producto.imagenes.find { |img| img.identifier == imagen }.remove!
       end
     end
-  
       #mantener las actuales
     if params[:producto][:imagenes]
       nuevas_imagenes = params[:producto][:imagenes]
@@ -61,8 +60,9 @@ class ProductosController < ApplicationController
   def update_stock
     @producto = Producto.find(params[:id])
     if @producto.update(stock_params)
-      redirect_to productos_path, notice: 'Stock actualizado con éxito.'
+      redirect_to productos_url, notice: 'Stock actualizado con éxito.'
     else
+      flash.now[:alert] = @producto.errors.full_messages.join(', ')
       render :edit_stock
     end
   
@@ -73,5 +73,10 @@ class ProductosController < ApplicationController
   def producto_params
     params.require(:producto).permit(:nombre, :descripcion, :precio, :stock, :categoria_id, { imagenes: [] }, :talle, :color_id, :fecha_ingreso, :fecha_modificacion, :fecha_baja)
   end
+
+  def stock_params
+    params.require(:producto).permit(:stock)
+  end 
+
 end
   

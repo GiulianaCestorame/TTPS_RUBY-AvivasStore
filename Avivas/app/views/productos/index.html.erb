@@ -104,7 +104,7 @@
         <!-- Acciones para modificar, eliminar o cambiar stock -->
         <div class="acciones">
           <%= link_to 'Editar', edit_producto_path(producto), class: 'btn btn-warning' %>
-          <%= link_to 'Modificar stock', edit_producto_path(producto), class: 'btn btn-primary' %>
+          <%= link_to 'Modificar stock', edit_stock_producto_path(producto), class: 'btn btn-primary' %>
           <%= button_to 'Eliminar', producto_path(producto), method: :delete, data: { confirm: '¿Estás seguro de que quieres eliminar este producto?' }, class: 'btn btn-danger link-style' %>        </div>
       </div>
     <% end %>

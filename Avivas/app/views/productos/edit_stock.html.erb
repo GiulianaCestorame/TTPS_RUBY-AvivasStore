@@ -1,0 +1,115 @@
+<html>
+<head>
+<style>
+form {
+  background: #f7f7f7;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  font-size: 24px;
+}
+
+.field {
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 14px;
+  color: #555;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
+
+.input-field:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #45a049;
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 10px;
+  background-color: #555;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  margin-top: 10px;
+}
+
+.btn-secondary:hover {
+  background-color: #333;
+}
+
+.alert {
+  background-color: #f44336;
+  color: white;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+  <h2>Editar Stock del Producto</h2>
+
+  <!-- Mostrar mensajes de error -->
+  <% if flash[:alert].present? %>
+    <div class="alert">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+  <%= form_with(model: @producto, local: true, url: update_stock_producto_path(@producto)) do |form| %>
+    <div class="field">
+      <%= form.label :nombre %>
+      <%= form.text_field :nombre, class: 'input-field', readonly: true %>
+    </div>
+
+    <div class="field">
+      <%= form.label :stock, "Stock Actual" %>
+      <%= form.number_field :stock, class: 'input-field' %>
+    </div>
+
+    <%= form.submit 'Actualizar Stock', class: 'btn-submit' %>
+  <% end %>
+
+  <%= link_to 'Cancelar', productos_url, class: 'btn btn-secondary' %>
+</body>
+</html>

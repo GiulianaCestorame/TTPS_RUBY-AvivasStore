@@ -7,14 +7,14 @@ Rails.application.routes.draw do
     member do
       get :edit_administracion     
       patch :update_administracion 
-      delete :desactivar, to: 'users#desactivar'  # Esto es la forma correcta de definir la ruta
+      delete :desactivar, to: 'users#desactivar'  
     end
   end
 
   resources :productos do
     member do
-      get 'edit_stock'  # Muestra el formulario para modificar el stock
-      patch 'update_stock'  # Acción para actualizar el stock
+      get 'edit_stock'  
+      patch 'update_stock'  
     end
   end
   
