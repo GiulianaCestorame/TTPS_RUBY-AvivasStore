@@ -35,11 +35,6 @@ class User < ApplicationRecord
     end
   end
 
-  def cannot_assign_admin_role
-    if role_int == "admin" && !current_user.admin?
-      errors.add(:role_int, "No tienes permiso para asignar el rol de admin. Se asignara el rol de empleado")
-    end
-  end
 
 
 

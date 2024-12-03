@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authorize_admin, only: [:desactivar]
-  before_action :authorize_admin_or_manager, only: [:index]
+  before_action :authorize_admin_or_manager, only: [:index, :edit_administracion, :update_administracion]
 
        
   def index
@@ -23,13 +23,11 @@ class UsersController < ApplicationController
 
   def update_administracion
     @user = User.find(params[:id])
-  
-    # Evitar que los administradores/gerentes cambien el rol de un usuario a admin
+    # evitar que los gerentes cambien el rol de un usuario a admin
     if current_user.manager? && user_params[:role_int] == 'admin'
       flash.now[:alert] = 'No puedes asignar el rol de administrador a este usuario.'
       render :edit_administracion and return
     end
-  
     if @user.update(user_params)
       redirect_to users_path, notice: 'Usuario actualizado con éxito.'
     else
