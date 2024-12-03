@@ -149,20 +149,55 @@
       container.appendChild(newField);
     }
 
+    //cliente scripts 
     function toggleNewClientFields() {
       var clientSelect = document.getElementById('venta_cliente_id');
       var addClientButton = document.getElementById('add-client-button');
+      
+      // Habilitar el botón solo si no hay cliente seleccionado
       addClientButton.disabled = clientSelect.value !== '';
     }
-
+    
     function showNewClientFields() {
       var clientSelect = document.getElementById('venta_cliente_id');
-      clientSelect.value = 'new';  // Establece el valor como "new" cuando se presiona el botón
-
+      var addClientButton = document.getElementById('add-client-button');
       var newClientFields = document.getElementById('new-client-fields');
+      
+      // Cambiar el valor del select a 'new' y deshabilitarlo para evitar la selección de clientes
+      clientSelect.value = 'new';
+      clientSelect.disabled = true;
+    
+      // Mostrar los campos para nuevo cliente
       newClientFields.style.display = 'block';
+      
+      // Cambiar el texto del botón a "Cerrar"
+      addClientButton.textContent = 'Cerrar';
+      
+      // Cambiar el evento del botón para cerrar
+      addClientButton.removeEventListener('click', showNewClientFields);
+      addClientButton.addEventListener('click', closeNewClientFields);
     }
-
+    
+    function closeNewClientFields() {
+      var clientSelect = document.getElementById('venta_cliente_id');
+      var addClientButton = document.getElementById('add-client-button');
+      var newClientFields = document.getElementById('new-client-fields');
+      
+      // Restaurar el estado del select (habilitar y limpiar)
+      clientSelect.disabled = false;
+      clientSelect.value = '';  // Permitir que el cliente seleccione otro cliente o no seleccione ninguno
+    
+      // Ocultar los campos de nuevo cliente
+      newClientFields.style.display = 'none';
+      
+      // Cambiar el texto del botón a "Agregar Nuevo Cliente"
+      addClientButton.textContent = 'Agregar Nuevo Cliente';
+      
+      // Cambiar el evento del botón para mostrar los campos nuevamente
+      addClientButton.removeEventListener('click', closeNewClientFields);
+      addClientButton.addEventListener('click', showNewClientFields);
+    }
+    
     document.addEventListener('DOMContentLoaded', function() {
       toggleNewClientFields();
       var clientSelect = document.getElementById('venta_cliente_id');
@@ -170,6 +205,42 @@
         clientSelect.addEventListener('change', toggleNewClientFields);
       }
     });
+
+    
+    //fin cli scripts 
+
+
+
+    let productIndex = 0;
+
+    function addProductFields() {
+      productIndex++;
+      var container = document.getElementById('products-container');
+      var newField = document.createElement('div');
+      newField.className = 'product-fields';
+      newField.innerHTML = `
+        <div class="field">
+          <label for="venta_ventas_productos_attributes_${productIndex}_producto_id">Producto</label>
+          <select name="venta[ventas_productos_attributes][${productIndex}][producto_id]" id="venta_ventas_productos_attributes_${productIndex}_producto_id" class="input-field">
+            ${document.getElementById('template-product-options').innerHTML}
+          </select>
+        </div>
+        <div class="field">
+          <label for="venta_ventas_productos_attributes_${productIndex}_cantidad">Cantidad</label>
+          <input type="number" name="venta[ventas_productos_attributes][${productIndex}][cantidad]" id="venta_ventas_productos_attributes_${productIndex}_cantidad" class="input-field">
+        </div>
+        <div class="field">
+          <label for="venta_ventas_productos_attributes_${productIndex}_precio_venta">Precio de Venta</label>
+          <input type="number" step="0.01" name="venta[ventas_productos_attributes][${productIndex}][precio_venta]" id="venta_ventas_productos_attributes_${productIndex}_precio_venta" class="input-field">
+        </div>
+        <input type="hidden" name="venta[ventas_productos_attributes][${productIndex}][_destroy]" value="false">
+      `;
+      container.appendChild(newField);
+    }
+    
+
+
+
   </script>
 </head>
 <body>
@@ -181,63 +252,69 @@
     </div>
   <% end %>
 
-  <%= form_with(model: @venta, url: ventas_path, method: :post, local: true) do |form| %>
-    <div class="field">
-      <%= form.label :cliente_id, "Cliente" %>
-      <%= form.collection_select :cliente_id, Cliente.all, :id, :nombre_completo, { include_blank: true }, { id: 'venta_cliente_id', class: 'input-field' } %>
-      <button type="button" id="add-client-button" class="btn-add-client" onclick="showNewClientFields()">Agregar Nuevo Cliente</button>
-    </div>
+ <%= form_with(model: @venta, url: ventas_path, method: :post, local: true) do |form| %>
+  <div class="field">
+    <%= form.label :cliente_id, "Cliente" %>
+    <%= form.collection_select :cliente_id, Cliente.all, :id, :nombre_completo, { include_blank: true }, { id: 'venta_cliente_id', class: 'input-field' } %>
+    <button type="button" id="add-client-button" class="btn-add-client" onclick="showNewClientFields()">Agregar Nuevo Cliente</button>
+  </div>
 
-    <div id="new-client-fields" style="display: none;">
-      <div class="field">
-        <%= form.label :nombre, "Nombre" %>
-        <%= form.text_field :nombre, class: 'input-field' %>
-      </div>
-      <div class="field">
-        <%= form.label :apellido, "Apellido" %>
-        <%= form.text_field :apellido, class: 'input-field' %>
-      </div>
-      <div class="field">
-        <%= form.label :dni, "DNI" %>
-        <%= form.text_field :dni, class: 'input-field' %>
-      </div>
-      <div class="field">
-        <%= form.label :telefono, "Teléfono" %>
-        <%= form.text_field :telefono, class: 'input-field' %>
-      </div>
+  <div id="new-client-fields" style="display: none;">
+    <div class="field">
+      <%= form.label :nombre, "Nombre" %>
+      <%= form.text_field :nombre, class: 'input-field' %>
     </div>
+    <div class="field">
+      <%= form.label :apellido, "Apellido" %>
+      <%= form.text_field :apellido, class: 'input-field' %>
+    </div>
+    <div class="field">
+      <%= form.label :dni, "DNI" %>
+      <%= form.text_field :dni, class: 'input-field' %>
+    </div>
+    <div class="field">
+      <%= form.label :telefono, "Teléfono" %>
+      <%= form.text_field :telefono, class: 'input-field' %>
+    </div>
+  </div>
 
-    <div class="field">
-      <%= form.label :user_id, "Empleado" %>
-      <%= form.collection_select :user_id, User.all, :id, :username, {}, { class: 'input-field' } %>
-    </div>
-    <div class="field">
-      <%= form.label :fecha_hora %>
-      <%= form.datetime_local_field :fecha_hora, value: Time.now.strftime("%Y-%m-%dT%H:%M"), class: 'input-field' %>
-    </div>
-    <h3>Productos Vendidos</h3>
-    <div id="products-container">
-      <%= form.fields_for :ventas_productos do |vp_form| %>
-        <div class="product-fields">
-          <div class="field">
-            <%= vp_form.label :producto_id, "Producto" %>
-            <%= vp_form.collection_select :producto_id, Producto.all, :id, :nombre, {}, { class: 'input-field' } %>
-          </div>
-          <div class="field">
-            <%= vp_form.label :cantidad %>
-            <%= vp_form.number_field :cantidad, class: 'input-field' %>
-          </div>
-          <div class="field">
-            <%= vp_form.label :precio_venta %>
-            <%= vp_form.number_field :precio_venta, class: 'input-field' %>
-          </div>
+  <div class="field">
+    <%= form.label :user_id, "Empleado" %>
+    <%= form.collection_select :user_id, User.all, :id, :username, {}, { class: 'input-field' } %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fecha_hora %>
+    <%= form.datetime_local_field :fecha_hora, value: Time.now.strftime("%Y-%m-%dT%H:%M"), class: 'input-field' %>
+  </div>
+
+  <h3>Productos Vendidos</h3>
+  <div id="products-container">
+    <%= form.fields_for :ventas_productos do |vp_form| %>
+      <div class="product-fields">
+        <div class="field">
+          <%= vp_form.label :producto_id, "Producto" %>
+          <%= vp_form.collection_select :producto_id, @productos_con_stock, :id, :nombre, {}, { class: 'input-field' } %>
+        </div>
+        <div class="field">
+          <%= vp_form.label :cantidad %>
+          <%= vp_form.number_field :cantidad, class: 'input-field' %>
+        </div>
+        <div class="field">
+          <%= vp_form.label :precio_venta %>
+          <%= vp_form.number_field :precio_venta, class: 'input-field' %>
+        </div>
+        <!-- Checkbox para eliminar el producto -->
+        <div class="field">
           <%= vp_form.check_box :_destroy %> Eliminar
         </div>
-      <% end %>
-    </div>
-    <button type="button" class="btn-add-product" onclick="addProductFields()">Agregar Producto</button>
-    <%= form.submit 'Registrar Venta', class: 'btn-submit' %>
-  <% end %>
+      </div>
+    <% end %>
+  </div>
+  <button type="button" class="btn-add-product" onclick="addProductFields()">Agregar Producto</button>
+  <%= form.submit 'Registrar Venta', class: 'btn-submit' %>
+<% end %>
+
 
   <%= link_to 'Cancelar', ventas_path, class: 'btn-secondary' %>
 
