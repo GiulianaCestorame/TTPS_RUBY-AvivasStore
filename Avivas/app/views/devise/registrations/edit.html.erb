@@ -1,137 +1,175 @@
-<html>
-<style>
-form {
-  background: #f7f7f7;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Información Personal</title>
+  
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-h2 {
-  text-align: center;
-  color: #333;
-  font-size: 24px;
-}
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
 
-.field {
-  margin-bottom: 15px;
-}
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
 
-label {
-  font-size: 14px;
-  color: #555;
-  display: block;
-  margin-bottom: 5px;
-}
+    form {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      margin: 50px auto;
+    }
 
-.input-field {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-}
+    h2 {
+      text-align: center;
+      color: #333;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
 
-.input-field:focus {
-  border-color: #4CAF50;
-  outline: none;
-}
+    .field {
+      margin-bottom: 15px;
+    }
 
-.btn-submit {
-  width: 100%;
-  padding: 10px;
-  background-color: #4CAF50;
-  color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
+    label {
+      font-size: 14px;
+      color: #555;
+      display: block;
+      margin-bottom: 5px;
+    }
 
-.btn-submit:hover {
-  background-color: #45a049;
-}
+    .input-field {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+    }
 
-em {
-  font-size: 12px;
-  color: #888;
-}
+    .input-field:focus {
+      border-color: #007bff;
+      outline: none;
+    }
 
-</style>
+    .btn-submit {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
 
-<h2>Editar información personal </h2>
+    .btn-submit:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
 
-<% if flash[:notice] %>
-  <div class="alert alert-success">
-    <%= flash[:notice] %>
-  </div>
-<% end %>
+    .btn-secondary {
+      width: 100%;
+      padding: 10px;
+      background-color: #6c757d;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      margin-top: 10px;
+    }
 
+    .btn-secondary:hover {
+      background-color: #5a6268;
+      transform: scale(1.05);
+    }
 
+    em {
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h2>Editar Información Personal</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibió que se guardaran los cambios:</h2>
-      <ul>
-        <% @user.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
+  <% if flash[:notice] %>
+    <div class="alert alert-success">
+      <%= flash[:notice] %>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :username %><br />
-    <%= f.text_field :username, value: resource.username, autofocus: true, autocomplete: "username" %>
-  </div>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, value: resource.email, autofocus: true, autocomplete: "email" %>
-  </div>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibió que se guardaran los cambios:</h2>
+        <ul>
+          <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+    <div class="field">
+      <%= f.label :username %><br />
+      <%= f.text_field :username, value: resource.username, autofocus: true, autocomplete: "username", class: "input-field" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :email %><br />
+      <%= f.email_field :email, value: resource.email, autofocus: true, autocomplete: "email", class: "input-field" %>
+    </div>
+
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :phone %><br />
+      <%= f.text_field :phone, value: resource.phone, autofocus: true, autocomplete: "phone", class: "input-field" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password %> <i>(deja en blanco si no quieres cambiarla)</i><br />
+      <%= f.password_field :password, autocomplete: "new-password", class: "input-field" %>
+      <% if @minimum_password_length %>
+        <br />
+        <em><%= @minimum_password_length %> caracteres como mínimo</em>
+      <% end %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password_confirmation %><br />
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input-field" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :current_password %> <i>(necesitamos tu contraseña actual para confirmar los cambios)</i><br />
+      <%= f.password_field :current_password, autocomplete: "current-password", class: "input-field" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Actualizar", class: "btn-submit" %>
+    </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :phone %><br />
-    <%= f.text_field :phone, value: resource.phone, autofocus: true, autocomplete: "phone" %>
-  </div>
+  <a href="<%= root_path %>" class="btn-secondary">Volver</a>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" , class: "btn-submit" %>
-  </div>
-
-
-<% end %>
-
-<%= link_to "Back", :back %>
+</body>
 </html>

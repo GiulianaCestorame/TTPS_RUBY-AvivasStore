@@ -10,19 +10,92 @@
 
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
   <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
+  <%= stylesheet_link_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' %>
+  <%= javascript_include_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js' %>
 
   <style>
-    .navbar-brand { font-size: 1.8rem; font-weight: bold; }
-    .nav-link { font-size: 1.2rem; margin-right: 10px; }
-    .btn-link { font-size: 1.2rem; margin-right: 10px; color: #ff0000; }
-    .container-fluid { background-color: #f8f9fa; }
-    
-    form { margin: 20px 0; }
-    input[type="text"] { padding: 10px; width: 70%; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px; }
-    button { padding: 10px 20px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer; }
-    button:hover { background-color: #0056b3; }
-    select { padding: 10px; width: 70%; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px; }
-    
+    body {
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .alert {
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .alert-success {
+      color: #155724;
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-bottom: 10px; /* Ensure buttons have consistent spacing */
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-warning {
+      background-color: #ffc107;
+      color: white;
+    }
+
+    .btn-warning:hover {
+      background-color: #e0a800;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
     .productos {
       display: flex;
       flex-wrap: wrap;
@@ -31,89 +104,122 @@
 
     .producto {
       border: 1px solid #ddd;
-      padding: 10px;
+      padding: 20px;
       width: 30%;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background: #fff;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
-    .producto img {
+    .producto .carousel {
+      width: 100%;
+    }
+
+    .producto .carousel-item img {
       width: 100%;
       height: auto;
+      border-radius: 5px;
     }
 
     .producto h3 {
       font-size: 1.5rem;
+      color: #333;
     }
 
     .producto p {
       margin: 0.5rem 0;
+      color: #555;
     }
 
     .acciones {
-      margin-top: 10px;
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
     }
 
-    .acciones a {
-      margin-right: 10px;
+    .acciones a,
+    .acciones button {
       font-size: 0.9rem;
       text-decoration: none;
-      color: #007bff;
+      margin-bottom: 10px;
     }
 
-    .acciones a:hover {
-      text-decoration: underline;
+    .link-style {
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <!-- Mensajes Flash -->
-  <% if flash[:notice] %>
-    <div class="alert alert-success">
-      <%= flash[:notice] %>
-    </div>
-  <% end %>
-
-<%= link_to "Back", :back %>
-
-<h2 >Administración de productos</h2>
-
-<br>
-<%= link_to 'Nuevo producto', new_producto_path, class: 'btn btn-warning' %>
-<br>
-
-
-<!-- Lista de productos -->
-<div class="productos">
-  <% if @productos.present? %>
-    <% @productos.each do |producto| %>
-      <div class="producto">
-        <!-- Mostrar todas las imágenes asociadas al producto -->
-        <% if producto.imagenes.present? %>
-          <div class="imagenes">
-            <% producto.imagenes.each do |imagen| %>
-              <%= image_tag imagen.url, alt: producto.nombre %>
-            <% end %>
-          </div>
-        <% end %>
-
-        <h3><%= producto.nombre %></h3>
-        <p><%= producto.descripcion %></p>
-        <p><strong>Precio:</strong> $<%= producto.precio %></p>
-        <p><strong>Stock disponible:</strong> <%= producto.stock %></p>
-
-        <!-- Acciones para modificar, eliminar o cambiar stock -->
-        <div class="acciones">
-          <%= link_to 'Editar', edit_producto_path(producto), class: 'btn btn-warning' %>
-          <%= link_to 'Modificar stock', edit_stock_producto_path(producto), class: 'btn btn-primary' %>
-          <%= button_to 'Eliminar', producto_path(producto), method: :delete, data: { confirm: '¿Estás seguro de que quieres eliminar este producto?' }, class: 'btn btn-danger link-style' %>        </div>
+  <div class="container">
+    <!-- Mensajes Flash -->
+    <% if flash[:notice] %>
+      <div class="alert alert-success">
+        <%= flash[:notice] %>
       </div>
     <% end %>
-  <% else %>
-    <p>No hay productos disponibles</p>
-  <% end %>
-</div>
 
+    <a href="<%= root_path %>" class="btn-secondary">Volver</a>
 
+    <h2>Administración de Productos</h2>
 
+    <%= link_to 'Nuevo producto', new_producto_path, class: 'btn btn-warning' %>
+
+    <!-- Lista de productos -->
+    <div class="productos">
+      <% if @productos.present? %>
+        <% @productos.each do |producto| %>
+          <div class="producto">
+            <!-- Mostrar todas las imágenes asociadas al producto -->
+            <% if producto.imagenes.any? %>
+              <div id="carousel<%= producto.id %>" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                  <% producto.imagenes.each_with_index do |imagen, index| %>
+                    <div class="carousel-item <%= 'active' if index == 0 %>">
+                      <%= image_tag imagen.url, alt: producto.nombre, class: "d-block w-100" %>
+                    </div>
+                  <% end %>
+                </div>
+                <a class="carousel-control-prev" href="#carousel<%= producto.id %>" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Anterior</span>
+                </a>
+                <a class="carousel-control-next" href="#carousel<%= producto.id %>" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Siguiente</span>
+                </a>
+              </div>
+            <% end %>
+
+            <h3><%= producto.nombre %></h3>
+            <p><%= producto.descripcion %></p>
+            <p><strong>Precio:</strong> $<%= producto.precio %></p>
+            <p><strong>Stock disponible:</strong> <%= producto.stock %></p>
+
+            <!-- Acciones para modificar, eliminar o cambiar stock -->
+            <div class="acciones">
+              <%= link_to 'Editar', edit_producto_path(producto), class: 'btn btn-warning' %>
+              <%= link_to 'Modificar stock', edit_stock_producto_path(producto), class: 'btn btn-primary' %>
+              <%= button_to 'Eliminar', producto_path(producto), method: :delete, data: { confirm: '¿Estás seguro de que quieres eliminar este producto?' }, class: 'btn btn-danger link-style' %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p>No hay productos disponibles</p>
+      <% end %>
+    </div>
+  </div>
+  
+  <%= javascript_include_tag 'https://code.jquery.com/jquery-3.5.1.slim.min.js' %>
+  <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js' %>
+  <%= javascript_include_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js' %>
 </body>
 </html>

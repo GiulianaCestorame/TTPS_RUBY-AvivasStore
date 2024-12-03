@@ -91,6 +91,9 @@ em {
 </style>
 </head>
 <body>
+
+<a href="<%= productos_path %>" class="btn-secondary">Volver</a>
+
   <h2>Editar Producto</h2>
 
   <!-- Mostrar mensajes de error -->
@@ -158,6 +161,5 @@ em {
     <%= form.submit 'Actualizar Producto', class: 'btn-submit' %>
   <% end %>
 
-  <%= link_to 'Cancelar', productos_url, class: 'btn btn-secondary' %>
 </body>
 </html>
