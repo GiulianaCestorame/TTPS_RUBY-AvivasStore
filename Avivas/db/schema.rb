@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_01_222004) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_03_145250) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -27,6 +27,15 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_01_222004) do
 
   create_table "categoria", force: :cascade do |t|
     t.string "nombre"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "clientes", force: :cascade do |t|
+    t.string "nombre"
+    t.string "apellido"
+    t.string "dni"
+    t.string "telefono"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -73,5 +82,32 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_01_222004) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "venta", force: :cascade do |t|
+    t.datetime "fecha_hora"
+    t.decimal "total"
+    t.integer "user_id", null: false
+    t.integer "cliente_id", null: false
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cliente_id"], name: "index_venta_on_cliente_id"
+    t.index ["user_id"], name: "index_venta_on_user_id"
+  end
+
+  create_table "ventas_productos", force: :cascade do |t|
+    t.integer "venta_id", null: false
+    t.integer "producto_id", null: false
+    t.integer "cantidad"
+    t.decimal "precio_venta"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["producto_id"], name: "index_ventas_productos_on_producto_id"
+    t.index ["venta_id"], name: "index_ventas_productos_on_venta_id"
+  end
+
   add_foreign_key "productos", "categoria", column: "categoria_id"
+  add_foreign_key "venta", "clientes"
+  add_foreign_key "venta", "users"
+  add_foreign_key "ventas_productos", "productos"
+  add_foreign_key "ventas_productos", "venta", column: "venta_id"
 end

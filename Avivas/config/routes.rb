@@ -17,6 +17,13 @@ Rails.application.routes.draw do
       patch 'update_stock'  
     end
   end
+
+  resources :ventas do
+    member do
+      patch :cancel
+    end
+  end
+  
   
 
   get "home/index"

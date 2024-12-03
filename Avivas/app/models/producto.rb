@@ -2,6 +2,9 @@ class Producto < ApplicationRecord
   belongs_to :categoria
   belongs_to :color
   mount_uploaders :imagenes, ImagenUploader 
+  
+  has_many :ventas_productos
+  has_many :ventas, through: :ventas_productos
 
 
   validates :nombre, :descripcion, :precio, :stock, :imagenes, :categoria_id, presence: true 

@@ -11,7 +11,7 @@ require_relative '../app/models/color'
 
 
 
-User.find_or_create_by!(email: 'gerente@gerente.com') do |user|
+gerente = User.find_or_create_by!(email: 'gerente@gerente.com') do |user|
   email = 'gerente@gerente.com'
   password = '123456'
   role_int = :manager
@@ -20,7 +20,7 @@ User.find_or_create_by!(email: 'gerente@gerente.com') do |user|
 end
 
 
-User.find_or_create_by!(email: 'empleado@empleado.com') do |user|
+empleado = User.find_or_create_by!(email: 'empleado@empleado.com') do |user|
   email = 'empleado@empleado.com'
   password = '123456'
   role_int = :employee
@@ -29,7 +29,7 @@ User.find_or_create_by!(email: 'empleado@empleado.com') do |user|
 end
 
 
-User.find_or_create_by!(email: 'admin@admin.com') do |user|
+admin = User.find_or_create_by!(email: 'admin@admin.com') do |user|
   email = 'admin@admin.com'
   password = '123456'
   role_int = :admin
@@ -133,7 +133,7 @@ Producto.find_or_create_by(
   prod.save
 end
 
-Producto.find_or_create_by(
+pantalon = Producto.find_or_create_by(
   nombre: 'Pantalones Negros',
   descripcion: 'Pantalones negros de vestir.',
   precio: 59.99,
@@ -145,7 +145,7 @@ Producto.find_or_create_by(
   prod.save
 end
 
-Producto.find_or_create_by(
+zapatos = Producto.find_or_create_by(
   nombre: 'Zapatos mujer',
   descripcion: 'Zapatos stilettos rojos.',
   precio: 99.99,
@@ -158,6 +158,43 @@ Producto.find_or_create_by(
 end
 
 puts 'Productos creados exitosamente.'
+
+
+
+# Crear algunos clientes
+cliente1 = Cliente.find_or_create_by(dni: '12345678') do |cliente|
+  cliente.nombre = 'Juan'
+  cliente.apellido = 'Pérez'
+  cliente.telefono = '123456789'
+end
+
+cliente2 = Cliente.find_or_create_by(dni: '87654321') do |cliente|
+  cliente.nombre = 'María'
+  cliente.apellido = 'González'
+  cliente.telefono = '987654321'
+end
+
+puts "Clientes creados exitosamente "
+
+
+
+# Crear algunas ventas
+venta1 = Venta.find_or_create_by(fecha_hora: Time.now, user: gerente, cliente: cliente1, total: 100.0)
+venta2 = Venta.find_or_create_by(fecha_hora: Time.now, user: empleado, cliente: cliente2, total: 150.0)
+
+# Agregar productos vendidos a las ventas
+VentasProducto.find_or_create_by(venta: venta1, producto: zapatos) do |vp|
+  vp.cantidad = 2
+  vp.precio_venta = 50.0
+end
+
+VentasProducto.find_or_create_by(venta: venta2, producto: pantalon) do |vp|
+  vp.cantidad = 2
+  vp.precio_venta = 75.0
+end
+
+puts "Ventas creadas exitosamente "
+
 
 
 

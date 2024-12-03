@@ -1,0 +1,248 @@
+<html>
+<head>
+  <style>
+    form {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      font-size: 28px;
+    }
+
+    h3 {
+      margin-top: 30px;
+      color: #333;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 16px;
+      color: #555;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+    }
+
+    .input-field:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .btn-submit:hover {
+      background-color: #45a049;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 10px;
+      background-color: #555;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      margin-top: 10px;
+    }
+
+    .btn-secondary:hover {
+      background-color: #333;
+    }
+
+    .btn-add-product {
+      background-color: #28a745;
+      color: white;
+      padding: 10px 20px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .btn-add-product:hover {
+      background-color: #218838;
+    }
+
+    .btn-add-client {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .btn-add-client:hover {
+      background-color: #0056b3;
+    }
+
+    .alert {
+      background-color: #f44336;
+      color: white;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .product-fields {
+      margin-bottom: 20px;
+    }
+  </style>
+  <script>
+    function addProductFields() {
+      var container = document.getElementById('products-container');
+      var newField = document.createElement('div');
+      newField.className = 'product-fields';
+      newField.innerHTML = `
+        <div class="field">
+          <label for="venta_ventas_productos_attributes_new_producto_id">Producto</label>
+          <select name="venta[ventas_productos_attributes][new][producto_id]" id="venta_ventas_productos_attributes_new_producto_id" class="input-field">
+            ${document.getElementById('template-product-options').innerHTML}
+          </select>
+        </div>
+        <div class="field">
+          <label for="venta_ventas_productos_attributes_new_cantidad">Cantidad</label>
+          <input type="number" name="venta[ventas_productos_attributes][new][cantidad]" id="venta_ventas_productos_attributes_new_cantidad" class="input-field">
+        </div>
+        <div class="field">
+          <label for="venta_ventas_productos_attributes_new_precio_venta">Precio de Venta</label>
+          <input type="number" step="0.01" name="venta[ventas_productos_attributes][new][precio_venta]" id="venta_ventas_productos_attributes_new_precio_venta" class="input-field">
+        </div>
+        <input type="hidden" name="venta[ventas_productos_attributes][new][_destroy]" value="false">
+      `;
+      container.appendChild(newField);
+    }
+
+    function toggleNewClientFields() {
+      var clientSelect = document.getElementById('venta_cliente_id');
+      var addClientButton = document.getElementById('add-client-button');
+      addClientButton.disabled = clientSelect.value !== '';
+    }
+
+    function showNewClientFields() {
+      var clientSelect = document.getElementById('venta_cliente_id');
+      clientSelect.value = 'new';  // Establece el valor como "new" cuando se presiona el botón
+
+      var newClientFields = document.getElementById('new-client-fields');
+      newClientFields.style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      toggleNewClientFields();
+      var clientSelect = document.getElementById('venta_cliente_id');
+      if (clientSelect) {
+        clientSelect.addEventListener('change', toggleNewClientFields);
+      }
+    });
+  </script>
+</head>
+<body>
+  <h2>Registrar Nueva Venta</h2>
+
+  <% if flash[:alert].present? %>
+    <div class="alert">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+  <%= form_with(model: @venta, url: ventas_path, method: :post, local: true) do |form| %>
+    <div class="field">
+      <%= form.label :cliente_id, "Cliente" %>
+      <%= form.collection_select :cliente_id, Cliente.all, :id, :nombre_completo, { include_blank: true }, { id: 'venta_cliente_id', class: 'input-field' } %>
+      <button type="button" id="add-client-button" class="btn-add-client" onclick="showNewClientFields()">Agregar Nuevo Cliente</button>
+    </div>
+
+    <div id="new-client-fields" style="display: none;">
+      <div class="field">
+        <%= form.label :nombre, "Nombre" %>
+        <%= form.text_field :nombre, class: 'input-field' %>
+      </div>
+      <div class="field">
+        <%= form.label :apellido, "Apellido" %>
+        <%= form.text_field :apellido, class: 'input-field' %>
+      </div>
+      <div class="field">
+        <%= form.label :dni, "DNI" %>
+        <%= form.text_field :dni, class: 'input-field' %>
+      </div>
+      <div class="field">
+        <%= form.label :telefono, "Teléfono" %>
+        <%= form.text_field :telefono, class: 'input-field' %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :user_id, "Empleado" %>
+      <%= form.collection_select :user_id, User.all, :id, :username, {}, { class: 'input-field' } %>
+    </div>
+    <div class="field">
+      <%= form.label :fecha_hora %>
+      <%= form.datetime_local_field :fecha_hora, value: Time.now.strftime("%Y-%m-%dT%H:%M"), class: 'input-field' %>
+    </div>
+    <h3>Productos Vendidos</h3>
+    <div id="products-container">
+      <%= form.fields_for :ventas_productos do |vp_form| %>
+        <div class="product-fields">
+          <div class="field">
+            <%= vp_form.label :producto_id, "Producto" %>
+            <%= vp_form.collection_select :producto_id, Producto.all, :id, :nombre, {}, { class: 'input-field' } %>
+          </div>
+          <div class="field">
+            <%= vp_form.label :cantidad %>
+            <%= vp_form.number_field :cantidad, class: 'input-field' %>
+          </div>
+          <div class="field">
+            <%= vp_form.label :precio_venta %>
+            <%= vp_form.number_field :precio_venta, class: 'input-field' %>
+          </div>
+          <%= vp_form.check_box :_destroy %> Eliminar
+        </div>
+      <% end %>
+    </div>
+    <button type="button" class="btn-add-product" onclick="addProductFields()">Agregar Producto</button>
+    <%= form.submit 'Registrar Venta', class: 'btn-submit' %>
+  <% end %>
+
+  <%= link_to 'Cancelar', ventas_path, class: 'btn-secondary' %>
+
+  <template id="template-product-options">
+    <%= options_for_select(Producto.all.map { |p| [p.nombre, p.id] }) %>
+  </template>
+</body>
+</html>

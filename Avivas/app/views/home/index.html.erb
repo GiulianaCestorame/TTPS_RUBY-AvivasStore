@@ -90,6 +90,9 @@ margin-right: 10px; }
             <li class="nav-item">
               <%= link_to "Productos", productos_path, class: "nav-link" %>
             </li>
+            <li class="nav-item">
+              <%= link_to "Ventas", ventas_path, class: "nav-link" %>
+            </li>
 
             <li class="nav-item">
               <%= button_to "Cerrar sesión", destroy_user_session_path, method: :delete, data: { confirm: '¿Estás seguro que deseas cerrar sesión?' }, class: "btn btn-link" %>
