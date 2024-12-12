@@ -13,7 +13,6 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/, message: "Formato de email incorrecto." }
   validates :phone, presence: true, format: { with: /\A\d{6,10}\z/, message: "El telefono debe tener entre 6 y 10 numeros" }
   validates :role_int, inclusion: { in: role_ints.keys.map { |role| role.to_s }, message: "%{value} Role invalido." }
-  validate :cannot_assign_admin_role, on: :create 
 
 
 
@@ -30,7 +29,6 @@ class User < ApplicationRecord
 
   def check_if_active_changed
     if saved_change_to_active? && !active?
-      # Ensure password is changed to a random token when deactivated
       self.password = Devise.friendly_token[0, 20] if active == false
     end
   end

@@ -66,6 +66,9 @@ em {
 
 </head>
 
+<a href="<%= users_path %>" class="btn-secondary">Volver</a>
+
+
 <h2>Crear nuevo usuario</h2>
 
 
@@ -108,10 +111,9 @@ em {
   </div>
 
   <div class="actions">
-    <%= f.submit "Sign up", class: "btn-submit" %>
+    <%= f.submit "Crear", class: "btn-submit" %>
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
 
 </html>

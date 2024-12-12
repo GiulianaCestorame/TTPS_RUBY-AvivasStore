@@ -21,31 +21,23 @@ class Users::RegistrationsController < Devise::RegistrationsController
       redirect_to root_path, notice: 'Perfil actualizado con éxito.'
     else
       puts("no se pudo")
+      flash.now[:alert] = @user.errors.full_messages.join(', ') 
       render :edit
     end
   end
 
-
   def new 
-    if user_signed_in? && (current_user.admin? || current_user.manager?) 
-      @current_user=current_user
-      @user = User.new 
-    else 
-      super 
-    end
+    @current_user=current_user
+    @user = User.new 
   end
 
   def create 
-    if user_signed_in? && (current_user.admin? || current_user.manager?) 
-      @user = User.new(user_params_create) 
-      if @user.save 
-        redirect_to users_path, notice: 'Usuario creado con éxito.' 
-      else 
-        flash.now[:alert] = @user.errors.full_messages.join(', ') 
-        render :new 
-      end 
+    @user = User.new(user_params_create) 
+    if @user.save 
+      redirect_to users_path, notice: 'Usuario creado con éxito.' 
     else 
-      super 
+      flash.now[:alert] = @user.errors.full_messages.join(', ') 
+      render :new 
     end 
   end
 
@@ -62,15 +54,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   
 
   def authorize_admin_or_manager
-    unless current_user.admin? || current_user.manager?
+    unless user_signed_in? && (current_user.admin? || current_user.manager?)
       redirect_to root_path, alert: 'No tienes permisos para realizar esta acción.'
     end
   end
 
-  def authorize_admin
-    unless current_user.admin?
-      redirect_to root_path, alert: 'No tienes permisos para realizar esta acción.'
-    end
+
+  def user_params
+    params.require(:user).permit(:username, :email, :phone, :password, :password_confirmation, :current_password)
   end
 
    protected
@@ -80,13 +71,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
      devise_parameter_sanitizer.permit(:account_update, keys: [:username, :email, :phone, :password, :password_confirmation, :current_password])
    end
   
-   private
 
-
-   #de editar perfil personal
-  def user_params
-    params.require(:user).permit(:username, :email, :phone, :password, :password_confirmation, :current_password)
-  end
 
 
 end

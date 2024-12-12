@@ -31,6 +31,7 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       redirect_to users_path, notice: 'Usuario actualizado con éxito.'
     else
+      flash.now[:alert] = @user.errors.full_messages.join(', ') 
       render :edit_administracion
     end
   end
@@ -39,19 +40,19 @@ class UsersController < ApplicationController
   private
 
   def authorize_admin
-    unless current_user.admin?
+    unless user_signed_in? && current_user.admin?
     redirect_to root_path, alert: 'No tienes permisos para realizar esta acción.'
     end
   end
 
   def authorize_admin_or_manager
-    unless current_user.admin? || current_user.manager?
+    unless user_signed_in? && (current_user.admin? || current_user.manager?)
       redirect_to root_path, alert: 'No tienes permisos para realizar esta acción.'
     end
   end
 
   def user_params
-    params.require(:user).permit(:username, :email, :phone, :password, :role_int, :active)
+    params.require(:user).permit(:username, :email, :phone, :password, :role_int)
   end
 
 

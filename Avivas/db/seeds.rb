@@ -10,32 +10,55 @@
 require_relative '../app/models/color'
 
 
-
 gerente = User.find_or_create_by!(email: 'gerente@gerente.com') do |user|
-  email = 'gerente@gerente.com'
-  password = '123456'
-  role_int = :manager
-  username = "manager"
-  phone = "123456"
+  user.password = '123456'
+  user.role_int = :manager
+  user.username = "GerenteGeneral"
+  user.phone = "123456789"
 end
 
-
+# Crear Empleado
 empleado = User.find_or_create_by!(email: 'empleado@empleado.com') do |user|
-  email = 'empleado@empleado.com'
-  password = '123456'
-  role_int = :employee
-  username = "empleado"
-  phone = "123456"
+  user.password = '123456'
+  user.role_int = :employee
+  user.username = "EmpleadoVentas"
+  user.phone = "987654321"
 end
 
-
+# Crear Admin
 admin = User.find_or_create_by!(email: 'admin@admin.com') do |user|
-  email = 'admin@admin.com'
-  password = '123456'
-  role_int = :admin
-  username = "admin"
-  phone = "123456"
+  user.password = '123456'
+  user.role_int = :admin
+  user.username = "Administrador"
+  user.phone = "1122334455"
 end
+
+# Crear otros usuarios adicionales si los necesitas
+otro_usuario = User.find_or_create_by!(email: 'usuario@usuario.com') do |user|
+  user.password = '123456'
+  user.role_int = :employee
+  user.username = "UsuarioRegular"
+  user.phone = "3344556677"
+end
+
+# Crear más usuarios si es necesario
+empleado2 = User.find_or_create_by!(email: 'empleado2@empresa.com') do |user|
+  user.password = '123456'
+  user.role_int = :employee
+  user.username = "EmpleadoSoporte"
+  user.phone = "5566778899"
+end
+
+gerente2 = User.find_or_create_by!(email: 'gerente2@empresa.com') do |user|
+  user.password = '123456'
+  user.role_int = :manager
+  user.username = "GerenteOperaciones"
+  user.phone = "4455667788"
+end
+
+
+puts 'Usuarios creados con exitosamente.'
+
 # Crear categorías
 camisas = Categoria.find_or_create_by(nombre: 'Camisas')
 pantalones = Categoria.find_or_create_by(nombre: 'Pantalones')
