@@ -10,7 +10,7 @@ class ProductosController < ApplicationController
   end
   
   def create
-    @producto = Producto.new(producto_params)
+    @producto = Producto.new(producto_params_create)
     if @producto.save
       redirect_to productos_url, notice: 'Producto creado con éxito.'
     else
@@ -78,6 +78,11 @@ class ProductosController < ApplicationController
   
   def producto_params
     params.require(:producto).permit(:nombre, :descripcion, :precio, :categoria_id, { imagenes: [] }, :talle, :color_id, :fecha_ingreso, :fecha_modificacion, :fecha_baja)
+  end
+
+  def producto_params_create
+    params.require(:producto).permit(:nombre, :descripcion, :precio, :stock, :categoria_id, { imagenes: [] }, :talle, :color_id)
+
   end
 
   def stock_params

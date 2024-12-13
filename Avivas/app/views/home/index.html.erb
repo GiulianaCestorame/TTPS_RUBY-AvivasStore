@@ -94,12 +94,7 @@ select { padding: 10px; width: 70%; border: 1px solid #ccc; border-radius: 5px; 
  
 </head>
 <body>
-  <!-- Mensajes Flash -->
-  <% if flash[:notice] %>
-    <div class="alert alert-success">
-      <%= flash[:notice] %>
-    </div>
-  <% end %>
+
 
   <!-- Barra de navegación -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -114,9 +109,11 @@ select { padding: 10px; width: 70%; border: 1px solid #ccc; border-radius: 5px; 
             <li class="nav-item">
               <%= link_to "Editar perfil", edit_user_registration_path, class: "nav-link active", aria_current: "page" %>
             </li>
+            <% if not @user.employee?%>
             <li class="nav-item">
               <%= link_to "Usuarios", users_path, class: "nav-link" %>
             </li>
+            <% end %>
             <li class="nav-item">
               <%= link_to "Productos", productos_path, class: "nav-link" %>
             </li>
@@ -181,6 +178,8 @@ select { padding: 10px; width: 70%; border: 1px solid #ccc; border-radius: 5px; 
           <p><%= producto.descripcion %></p>
           <p><strong>Precio:</strong> $<%= producto.precio %></p>
           <p><strong>Stock disponible:</strong> <%= producto.stock %></p>
+          <p><strong>Categoria:</strong> <%= producto.categoria.nombre %></p>
+
         </div>
       <% end %>
     <% else %>

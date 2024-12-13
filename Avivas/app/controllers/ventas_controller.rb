@@ -65,7 +65,6 @@ class VentasController < ApplicationController
   
 
   def cancel
-    puts("estoy en el controlador de cancelar venta ")
     @venta = Venta.find(params[:id])
     if @venta.active == false 
       return redirect_to ventas_path , notice: 'La venta ya se encuentra cancelada'

@@ -96,12 +96,7 @@ em {
 
   <h2>Editar Producto</h2>
 
-  <!-- Mostrar mensajes de error -->
-  <% if flash[:alert].present? %>
-    <div class="alert">
-      <%= flash[:alert] %>
-    </div>
-  <% end %>
+
 
   <%= form_with(model: @producto, local: true, html: { multipart: true }) do |form| %>
     <div class="field">

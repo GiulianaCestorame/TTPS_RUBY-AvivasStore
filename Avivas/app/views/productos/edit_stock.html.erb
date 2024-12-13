@@ -89,12 +89,7 @@ label {
 <body>
   <h2>Editar Stock del Producto</h2>
 
-  <!-- Mostrar mensajes de error -->
-  <% if flash[:alert].present? %>
-    <div class="alert">
-      <%= flash[:alert] %>
-    </div>
-  <% end %>
+
 
   <%= form_with(model: @producto, local: true, url: update_stock_producto_path(@producto)) do |form| %>
     <div class="field">

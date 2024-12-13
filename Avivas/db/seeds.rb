@@ -33,7 +33,6 @@ admin = User.find_or_create_by!(email: 'admin@admin.com') do |user|
   user.phone = "1122334455"
 end
 
-# Crear otros usuarios adicionales si los necesitas
 otro_usuario = User.find_or_create_by!(email: 'usuario@usuario.com') do |user|
   user.password = '123456'
   user.role_int = :employee
@@ -41,7 +40,6 @@ otro_usuario = User.find_or_create_by!(email: 'usuario@usuario.com') do |user|
   user.phone = "3344556677"
 end
 
-# Crear más usuarios si es necesario
 empleado2 = User.find_or_create_by!(email: 'empleado2@empresa.com') do |user|
   user.password = '123456'
   user.role_int = :employee
@@ -201,19 +199,18 @@ puts "Clientes creados exitosamente "
 
 
 
-# Crear algunas ventas
-venta1 = Venta.find_or_create_by(fecha_hora: Time.now, user: gerente, cliente: cliente1, total: 100.0)
-venta2 = Venta.find_or_create_by(fecha_hora: Time.now, user: empleado, cliente: cliente2, total: 150.0)
+venta1 = Venta.find_or_create_by(fecha_hora: Time.now, user: gerente, cliente: cliente1, total: 199.98)
+venta2 = Venta.find_or_create_by(fecha_hora: Time.now, user: empleado, cliente: cliente2, total: 59.99)
 
 # Agregar productos vendidos a las ventas
 VentasProducto.find_or_create_by(venta: venta1, producto: zapatos) do |vp|
   vp.cantidad = 2
-  vp.precio_venta = 50.0
+  vp.precio_venta = 99.99
 end
 
 VentasProducto.find_or_create_by(venta: venta2, producto: pantalon) do |vp|
-  vp.cantidad = 2
-  vp.precio_venta = 75.0
+  vp.cantidad = 1
+  vp.precio_venta = 59.99
 end
 
 puts "Ventas creadas exitosamente "
