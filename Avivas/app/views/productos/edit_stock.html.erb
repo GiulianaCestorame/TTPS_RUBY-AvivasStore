@@ -104,7 +104,7 @@ label {
 
     <div class="field">
       <%= form.label :stock, "Stock Actual" %>
-      <%= form.number_field :stock, class: 'input-field' %>
+      <%= form.number_field :stock, class: 'input-field' , min: 1 %>
     </div>
 
     <%= form.submit 'Actualizar Stock', class: 'btn-submit' %>

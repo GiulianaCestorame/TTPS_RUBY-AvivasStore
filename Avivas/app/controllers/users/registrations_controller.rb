@@ -12,15 +12,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
   
 #editar perfil personal 
-#no se muestran los mensajes de error en el template 
   def update
-    puts("entre a funcion del controlador")
     @user = current_user
     if @user.update_with_password(user_params)
-      puts("act exitosa")
       redirect_to root_path, notice: 'Perfil actualizado con éxito.'
     else
-      puts("no se pudo")
       flash.now[:alert] = @user.errors.full_messages.join(', ') 
       render :edit
     end

@@ -104,27 +104,22 @@
   </style>
 </head>
 <body>
+
   <h2>Editar Información Personal</h2>
 
+  <!--
   <% if flash[:notice] %>
     <div class="alert alert-success">
       <%= flash[:notice] %>
     </div>
-  <% end %>
+  <% end %> -->
+
+
 
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
-    <% if @user.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@user.errors.count, "error") %> prohibió que se guardaran los cambios:</h2>
-        <ul>
-          <% @user.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+
 
     <div class="field">
       <%= f.label :username %><br />

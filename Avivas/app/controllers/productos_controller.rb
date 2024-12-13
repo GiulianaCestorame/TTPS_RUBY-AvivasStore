@@ -2,7 +2,7 @@ class ProductosController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @productos = Producto.all
+    @productos = Producto.where('stock > ?', 0)
   end
   
   def new
@@ -61,6 +61,10 @@ class ProductosController < ApplicationController
     
   def update_stock
     @producto = Producto.find(params[:id])
+    if stock_params[:stock].to_i < 1
+      flash.now[:alert] = "El stock debe ser mayor o igual a 1"
+      return render :edit_stock
+    end
     if @producto.update(stock_params)
       redirect_to productos_url, notice: 'Stock actualizado con éxito.'
     else
@@ -73,7 +77,7 @@ class ProductosController < ApplicationController
   private
   
   def producto_params
-    params.require(:producto).permit(:nombre, :descripcion, :precio, :stock, :categoria_id, { imagenes: [] }, :talle, :color_id, :fecha_ingreso, :fecha_modificacion, :fecha_baja)
+    params.require(:producto).permit(:nombre, :descripcion, :precio, :categoria_id, { imagenes: [] }, :talle, :color_id, :fecha_ingreso, :fecha_modificacion, :fecha_baja)
   end
 
   def stock_params
