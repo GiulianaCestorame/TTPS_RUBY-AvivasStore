@@ -23,16 +23,16 @@ Antes de ejecutar la aplicación, asegúrate de tener instalados los siguientes 
 Sigue estos pasos para configurar y ejecutar la aplicación en tu entorno local:
 
 -**bash**
--git clone https://github.com/tu_usuario/avivas.git](https://github.com/GiulianaCestorame/Avivas-TP.git
--cd Avivas
--bundle install
--rails db:create
--rails db:migrate
--rails db:seed
--rails server
--Accede a la aplicación a través de tu navegador en http://localhost:3000.
+- git clone https://github.com/tu_usuario/avivas.git](https://github.com/GiulianaCestorame/Avivas-TP.git
+- cd Avivas
+- bundle install
+- rails db:create
+- rails db:migrate
+- rails db:seed
+- rails server
+- Accede a la aplicación a través de tu navegador en http://localhost:3000.
 
 
 ## Contacto
--Correo electrónico: giulianaacestorame@gmail.com
+- Correo electrónico: giulianaacestorame@gmail.com
 
