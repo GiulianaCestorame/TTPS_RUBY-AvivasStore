@@ -229,10 +229,7 @@
           <label for="venta_ventas_productos_attributes_${productIndex}_cantidad">Cantidad</label>
           <input type="number" name="venta[ventas_productos_attributes][${productIndex}][cantidad]" id="venta_ventas_productos_attributes_${productIndex}_cantidad" class="input-field">
         </div>
-        <div class="field">
-          <label for="venta_ventas_productos_attributes_${productIndex}_precio_venta">Precio de Venta</label>
-          <input type="number" step="0.01" name="venta[ventas_productos_attributes][${productIndex}][precio_venta]" id="venta_ventas_productos_attributes_${productIndex}_precio_venta" class="input-field">
-        </div>
+        
         <input type="hidden" name="venta[ventas_productos_attributes][${productIndex}][_destroy]" value="false">
       `;
       container.appendChild(newField);
@@ -246,11 +243,8 @@
 <body>
   <h2>Registrar Nueva Venta</h2>
 
-  <% if flash[:alert].present? %>
-    <div class="alert">
-      <%= flash[:alert] %>
-    </div>
-  <% end %>
+  <%= render 'shared/flash_messages' %> 
+
 
  <%= form_with(model: @venta, url: ventas_path, method: :post, local: true) do |form| %>
   <div class="field">
@@ -283,10 +277,7 @@
     <%= form.collection_select :user_id, User.all, :id, :username, {}, { class: 'input-field' } %>
   </div>
 
-  <div class="field">
-    <%= form.label :fecha_hora %>
-    <%= form.datetime_local_field :fecha_hora, value: Time.now.strftime("%Y-%m-%dT%H:%M"), class: 'input-field' %>
-  </div>
+
 
   <h3>Productos Vendidos</h3>
   <div id="products-container">
@@ -300,10 +291,7 @@
           <%= vp_form.label :cantidad %>
           <%= vp_form.number_field :cantidad, class: 'input-field' %>
         </div>
-        <div class="field">
-          <%= vp_form.label :precio_venta %>
-          <%= vp_form.number_field :precio_venta, class: 'input-field' %>
-        </div>
+       
         <!-- Checkbox para eliminar el producto -->
         <div class="field">
           <%= vp_form.check_box :_destroy %> Eliminar

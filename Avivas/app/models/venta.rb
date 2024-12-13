@@ -7,9 +7,10 @@ class Venta < ApplicationRecord
 
   accepts_nested_attributes_for :ventas_productos, allow_destroy: true
 
-  validates :fecha_hora, :total, :user_id, presence: true
+  validates :total, :user_id, presence: true
 
   before_create :check_stock
+  before_create :set_fechayhora
 
   private
 
@@ -24,6 +25,11 @@ class Venta < ApplicationRecord
       end
     end
   end
+
+  def set_fechayhora
+    self.fecha_hora = DateTime.now 
+  end 
+
 
   
 end

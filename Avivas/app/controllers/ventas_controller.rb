@@ -29,11 +29,16 @@ class VentasController < ApplicationController
   
       @venta = Venta.new(venta_params)
       #calcula total
-      @venta.total = @venta.ventas_productos.sum { |vp| vp.cantidad * vp.precio_venta }
+      total_calculado = @venta.ventas_productos.sum do |vp|
+        producto = Producto.find(vp.producto_id)
+        vp.cantidad * producto.precio 
+      end
+      @venta.total = total_calculado
       logger.info "Total calculado: #{@venta.total}"
   
       if @venta.save
         # actualizar el stock de los productos vendidos
+        
         @venta.ventas_productos.each do |vp|
           producto = vp.producto
           logger.info "Actualizando stock de producto: #{producto.nombre}, stock actual: #{producto.stock}"
@@ -63,7 +68,7 @@ class VentasController < ApplicationController
     puts("estoy en el controlador de cancelar venta ")
     @venta = Venta.find(params[:id])
     if @venta.active == false 
-      redirect_to ventas_path , notice: 'La venta ya se encuentra cancelada'
+      return redirect_to ventas_path , notice: 'La venta ya se encuentra cancelada'
     end
     ActiveRecord::Base.transaction do
       @venta.update!(active: false)
@@ -78,7 +83,7 @@ class VentasController < ApplicationController
   private
 
   def venta_params
-    params.require(:venta).permit(:cliente_id, :user_id, :fecha_hora, ventas_productos_attributes: [:producto_id, :cantidad, :precio_venta, :_destroy])
+    params.require(:venta).permit(:cliente_id, :user_id, ventas_productos_attributes: [:producto_id, :cantidad, :_destroy])
   end
 
   def cliente_params

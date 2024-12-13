@@ -115,8 +115,7 @@
       <% @ventas.each do |venta| %>
         <div class="card">
           <div class="card-header">
-            <h3>Venta ID: <%= venta.id %></h3>
-            <span><%= venta.fecha_hora %></span>
+            <span><%= venta.fecha_hora&.strftime("%d/%m/%Y %H:%M") %></span>
           </div>
           <div class="card-body">
             <p><strong>Total:</strong> <%= number_to_currency(venta.total) %></p>
@@ -128,7 +127,7 @@
                 <div class="product-item">
                   <p><strong>Producto:</strong> <%= vp.producto.nombre %></p>
                   <p><strong>Cantidad:</strong> <%= vp.cantidad %></p>
-                  <p><strong>Precio de Venta:</strong> <%= number_to_currency(vp.precio_venta) %></p>
+                  <p><strong>Precio de Venta:</strong> <%= number_to_currency(vp.producto.precio) %></p>
                 </div>
               <% end %>
             </div>
