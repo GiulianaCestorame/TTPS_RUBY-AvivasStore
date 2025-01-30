@@ -23,7 +23,7 @@ Antes de ejecutar la aplicación, asegúrate de tener instalados los siguientes 
 Sigue estos pasos para configurar y ejecutar la aplicación en tu entorno local:
 
 -**bash**
-- git clone https://github.com/tu_usuario/avivas.git](https://github.com/GiulianaCestorame/Avivas-TP.git
+- git clone https://github.com/GiulianaCestorame/TTPS_RUBY-AvivasStore.git
 - cd Avivas
 - bundle install
 - rails db:create
